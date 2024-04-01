@@ -30,8 +30,8 @@
 				<%
 					if (userID == null) {
 				%>
-				<li><a href="/login">LOGIN</a></li>
-				<li><a href="/join">JOIN</a></li>
+				<li><a href="/tgt_login">LOGIN</a></li>
+				<li><a href="/tgt_join">JOIN</a></li>
 				<%
 					} else {
 				%>

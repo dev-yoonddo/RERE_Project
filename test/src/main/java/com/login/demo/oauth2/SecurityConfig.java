@@ -9,40 +9,65 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-@Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+@Configuration
 
 public class SecurityConfig{
 
-    private Oauth2UserServiceImpl oauth2UserServiceImpl;
-
+    private final Oauth2UserServiceImpl oauth2UserServiceImpl;
+    public SecurityConfig(Oauth2UserServiceImpl oauth2UserServiceImpl){
+        this.oauth2UserServiceImpl = oauth2UserServiceImpl;
+    }
+//    @Bean
+//    public UserDetailsService custonUserService(){
+//        InMemoryUserDetailsManager uds =new InMemoryUserDetailsManager();
+//        UserDetails user = User.withUsername("yoon")
+//                .password("1111")
+//                .roles("ADMIN")
+//                .build();
+//        uds.createUser(user);
+//        return uds;
+//    }
     @Bean
-    public UserDetailsService custonUserService(){
-        InMemoryUserDetailsManager uds =new InMemoryUserDetailsManager();
-        UserDetails user = User.withUsername("yoon")
-                .password("1111")
-                .roles("ADMIN")
-                .build();
-        uds.createUser(user);
-        return uds;
+    public BCryptPasswordEncoder encoder(){
+        return new BCryptPasswordEncoder();
     }
     @Bean
-    protected void filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(authz -> authz.anyRequest().authenticated()) // 인증된 사용자만 엔드포인트에 접근 가능
-                .formLogin(f -> f.defaultSuccessUrl("/community", true));  // 양식 기반 로그인 인증 방식을 사용하고, 인증 성공 시 /main 으로 이동
-        http.csrf(c -> c.ignoringRequestMatchers("/write")) // /world 경로는 CSRF 보호 제회
-                .authorizeHttpRequests(authz -> authz.anyRequest().permitAll());  // 그 외의 경로는 인증없이 모두 허용
+    public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+            http
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement((sessionManagement) ->
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests((authorizeRequest)-> authorizeRequest
+                        .requestMatchers("/user/**").authenticated()
+                        .anyRequest().permitAll())
+                    //.requestMatchers(new MvcRequestMatcher(introspector, "/user/**")).authenticated().anyRequest().permitAll())
+                    .logout(logout-> logout.logoutSuccessUrl("/"))
+
+                .oauth2Login((oauth2Login)->oauth2Login.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oauth2UserServiceImpl)).defaultSuccessUrl("/community"))
+    ;
+            return http.build();
+                        //        http
+//                .authorizeHttpRequests(authz -> authz.anyRequest().authenticated()) // 인증된 사용자만 엔드포인트에 접근 가능
+//                .formLogin(f -> f.defaultSuccessUrl("/community", true));  // 양식 기반 로그인 인증 방식을 사용하고, 인증 성공 시 /main 으로 이동
+//        http.csrf(c -> c.ignoringRequestMatchers("/write")) // /world 경로는 CSRF 보호 제회
+//                .authorizeHttpRequests(authz -> authz.anyRequest().permitAll());  // 그 외의 경로는 인증없이 모두 허용
 
     }
 //    @Override

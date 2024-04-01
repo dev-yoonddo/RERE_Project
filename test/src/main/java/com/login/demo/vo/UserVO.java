@@ -2,6 +2,7 @@ package com.login.demo.vo;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,9 @@ import lombok.NoArgsConstructor;
 public class UserVO {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private String id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -27,20 +29,19 @@ public class UserVO {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "role",nullable = true)
     private Role role;
 
     @Builder
-    public UserVO(String id, String name, String email, String password,Role role) {
+    public UserVO(Long id, String name, String email, String password,Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
     }
-    public UserVO update(String name, String email) {
+    public UserVO update(String name) {
         this.name = name;
-        this.email = email;
         return this;
     }
     /*public String getRoleKey() {

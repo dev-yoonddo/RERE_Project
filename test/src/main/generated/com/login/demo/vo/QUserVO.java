@@ -21,7 +21,7 @@ public class QUserVO extends EntityPathBase<UserVO> {
 
     public final StringPath email = createString("email");
 
-    public final StringPath id = createString("id");
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath name = createString("name");
 

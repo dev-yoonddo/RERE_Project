@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
-@RequiredArgsConstructor
+
 @Controller
 public class HomeController {
 
@@ -28,10 +28,15 @@ public class HomeController {
         log.debug("컨트롤러의 home() 메소드");
         return "redirect:/community";
     }
-    @RequestMapping(value={"/login"})
-    public String login(Model model) {
+    @GetMapping(value={"/tgt_login"})
+    public String tgtlogin(Model model) {
         log.debug("컨트롤러의 login() 메소드");
-        return "login";
+        return "login_page";
+    }
+    @RequestMapping(value={"/login/google"})
+    public String googlelogin(Model model) {
+        log.debug("컨트롤러의 login() 메소드");
+        return "/oauth2/authorization/google";
     }
     @RequestMapping(value={"/write"})
     public String write(Model model) {
