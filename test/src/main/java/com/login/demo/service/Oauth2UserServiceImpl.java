@@ -42,6 +42,11 @@ public class Oauth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
 
         UserVO user = saveOrUpdate(attributes);
         httpSession.setAttribute("user", new SessionUser(user));
+        httpSession.setAttribute("userID", user.getEmail());
+
+        if(user.getPassword() == null || user.getPassword().equals("")){
+            httpSession.setAttribute("emptypw","yes");
+        }
         System.out.println("loadUser method");
         System.out.println(user);
 

@@ -130,12 +130,6 @@ button {
 }
 </style>
 <body>
-<%
-	String userID=null;
-	if(session.getAttribute("userID")!=null){
-		userID=(String)session.getAttribute("userID");
-	}
-%>
 <header>
 	<jsp:include page="/resources/header/header.jsp"/>
 </header>

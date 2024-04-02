@@ -60,7 +60,7 @@ public class SecurityConfig{
                     //.requestMatchers(new MvcRequestMatcher(introspector, "/user/**")).authenticated().anyRequest().permitAll())
                     .logout(logout-> logout.logoutSuccessUrl("/"))
 
-                .oauth2Login((oauth2Login)->oauth2Login.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oauth2UserServiceImpl)).defaultSuccessUrl("/community"))
+                .oauth2Login((oauth2Login)->oauth2Login.userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oauth2UserServiceImpl)).defaultSuccessUrl("/google-pw"))
     ;
             return http.build();
                         //        http

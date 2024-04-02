@@ -43,7 +43,7 @@ public class OAuthAttributes {
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
-                .password("password")
+                .password(null)
                 .attributes(attributes)
                 .nameAttributeKey(nameAttributeName)
                 .build();

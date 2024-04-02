@@ -1,11 +1,15 @@
 package com.login.demo.controller;
 
+import com.login.demo.vo.UserVO;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -23,20 +27,32 @@ public class HomeController {
         return "community";
     }
 
-    @GetMapping(value={"/", "/user/community"})
-    public String home(Model model) {
+    @RequestMapping(value={"/", "/user/community"})
+    public String home(Model model, HttpSession session) {
         log.debug("컨트롤러의 home() 메소드");
-        return "redirect:/community";
+//        System.out.println("사용자: "+session.getAttribute("userID"));
+//        if(session.getAttribute("userID") != null){
+//            model.addAttribute("userID",session.getAttribute("userID"));
+//        }
+        return "redirect:community";
     }
     @GetMapping(value={"/tgt_login"})
     public String tgtlogin(Model model) {
         log.debug("컨트롤러의 login() 메소드");
         return "login_page";
     }
-    @RequestMapping(value={"/login/google"})
-    public String googlelogin(Model model) {
-        log.debug("컨트롤러의 login() 메소드");
-        return "/oauth2/authorization/google";
+    @RequestMapping(value={"/google-pw"})
+    public String googlelogin(Model model, HttpSession session) {
+        log.debug("컨트롤러의 googlelogin() 메소드");
+        String pw = (String)session.getAttribute("emptypw");
+        System.out.println("패스워드가 없나요?: "+pw);
+        if(pw != null && pw.equals("yes")){
+            model.addAttribute("emptypw","yes");
+            System.out.println("기존 비밀번호 없음");
+        }else{
+            System.out.println("기존 비밀번호 존재");
+        }
+        return "join_google";
     }
     @RequestMapping(value={"/write"})
     public String write(Model model) {
