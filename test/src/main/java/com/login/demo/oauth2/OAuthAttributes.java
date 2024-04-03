@@ -1,10 +1,9 @@
 package com.login.demo.oauth2;
 
 import com.login.demo.vo.Role;
-import com.login.demo.vo.UserVO;
+import com.login.demo.vo.UserEntity;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Map;
 
@@ -50,8 +49,8 @@ public class OAuthAttributes {
     }
 
 
-    public UserVO toEntity() {
-        return UserVO.builder()
+    public UserEntity toEntity() {
+        return UserEntity.builder()
                 .name(name)
                 .email(email)
                 .password(password)

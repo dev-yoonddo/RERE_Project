@@ -26,28 +26,33 @@
    <script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 <style>
+h2{
+    color: black;
+}
 .login-wrapper{
 	margin: 20px;
 }
 #error-text{
 	color: red;
 }
+#form-bottom{
+    display: flex;
+}
 #login-bottom{
-	width: 100%;
-	display: flex;
-	padding: 7px;
+	width: 50%;
+	display: inline;
 	margin: 0 auto;
+		float: right;
 }
 #remember{
-	width: 50%;
-	float: left;
+	width: 100%;
+	text-align: right;
 }
 #join{
-	width: 50%;
-	padding: 5px;
-	padding-left: 60px; 
+	width: 100%;
 	cursor: pointer;
-	float: right;
+		text-align: right;
+
 }
 </style>
 <body>
@@ -64,28 +69,13 @@ if(session.getAttribute("userID") != null){
 <section>
 	<div class="login-wrapper">
 	<div>
-		<h2>로그인
-		</h2>
-		<form method="post" action="/login" role="form" id="login-form">
-		    <input type="text" name="userID" id="userID" placeholder="아이디 입력">
-		    <input type="password" name="userPassword" id="userPassword" placeholder="비밀번호 입력">
-		    <c:if test="${loginError == 'fail'}">
-		    	<span id="error-text">아이디 또는 비밀번호 오류입니다.</span>
-		    </c:if>
-		    <input type="submit" id="login" value="Login">
-		</form>
-        <div id="google-btn" style="width: 100%">
-		<a href="/oauth2/authorization/google">
-		<img src="resources/image/web_neutral_sq_SU@1x.png" style="width: 100%;"/>
-		</a>
-		</div>
-		<div id="login-bottom">
-			<div id="remember">
-			    <label for="remember-check">
-			        <input type="checkbox" id="remember-check">아이디 저장하기
-			    </label>
-		    </div>
-			<div id="join" onclick="location.href='/join'">회원가입 하러가기</div>
+		<h2>간편하게 시작하기</h2>
+		<div id="form-bottom">
+           <div id="google-btn" style="width: 100%">
+                <a href="/oauth2/authorization/google">
+                <img src="resources/image/web_neutral_rd_na@3x.png" style="width: 100%;"/>
+                </a>
+            </div>
 		</div>
 	</div>
 	</div>

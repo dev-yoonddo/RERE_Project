@@ -169,7 +169,8 @@ function search(){
 }
 //select box 클릭하면 접고 펼치기
 function onClickSelect(e) {
-	const isActive = e.currentTarget.className.indexOf("active") !== -1;
+	const isActive = e.curr
+	entTarget.className.indexOf("active") !== -1;
 	if (isActive) {
 	  e.currentTarget.className = "select";
 	} else {

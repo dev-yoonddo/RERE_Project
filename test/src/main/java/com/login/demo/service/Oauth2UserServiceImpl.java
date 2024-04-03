@@ -4,10 +4,8 @@ package com.login.demo.service;
 import com.login.demo.oauth2.OAuthAttributes;
 import com.login.demo.oauth2.SessionUser;
 import com.login.demo.repo.UserRepo;
-import com.login.demo.vo.UserVO;
+import com.login.demo.vo.UserEntity;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -40,8 +38,8 @@ public class Oauth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
         OAuthAttributes attributes = OAuthAttributes.
                 of(registrationId, userIDAttributeID, oAuth2User.getAttributes());
 
-        UserVO user = saveOrUpdate(attributes);
-        httpSession.setAttribute("user", new SessionUser(user));
+        UserEntity user = saveOrUpdate(attributes);
+//        httpSession.setAttribute("user", new SessionUser(user));
         httpSession.setAttribute("userID", user.getEmail());
 
         if(user.getPassword() == null || user.getPassword().equals("")){
@@ -55,8 +53,10 @@ public class Oauth2UserServiceImpl implements OAuth2UserService<OAuth2UserReques
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
     }
-    private UserVO saveOrUpdate(OAuthAttributes attributes) {
-        UserVO user = userRepo.findByEmail(attributes.getEmail())
+
+    //DB에 회원 정보 저장
+    private UserEntity saveOrUpdate(OAuthAttributes attributes) {
+        UserEntity user = userRepo.findByEmail(attributes.getEmail())
                 .map(entity -> entity.update(attributes.getName()))
                 .orElse(attributes.toEntity());
         return userRepo.save(user);

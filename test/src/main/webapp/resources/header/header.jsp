@@ -19,14 +19,21 @@
 				</div>
 				<ul class="navbar_menu" style="float: left;">
 					<li><a href="/community" class="menu">GO</a></li>
+					<c:if test="${not empty user}">
                     <li><a>${userID}님 로그인</a></li>
+                    </c:if>
 				</ul>
 			</nav>
 			<ul class="navbar_login">
 			    <c:choose>
-                    <c:when test="${userID == null}">
-                        <li><a href="/tgt_login">LOGIN</a></li>
-                        <li><a href="/tgt_join">JOIN</a></li>
+                    <c:when test="${user == null}">
+                        <li>
+                        <div id="google-btn" style="width: 50px;">
+                            <a href="/oauth2/authorization/google">
+                            <img src="resources/image/web_neutral_rd_na@3x.png" style="width: 100%;"/>
+                            </a>
+                        </div>
+                        </li>
                     </c:when>
                     <c:otherwise>
                         <li><a href="/user/update"><i class="fa-solid fa-gear"
