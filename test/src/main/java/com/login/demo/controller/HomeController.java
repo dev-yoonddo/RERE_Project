@@ -27,6 +27,7 @@ public class HomeController {
         return "community";
     }
 
+    //login 여부 확인 후 파라미터로 전달받은 경로로 이동
     @RequestMapping(value={"/access/{url}"})
     public String sessionUser(Model model,@PathVariable String url, @LoginUser SessionUser session) {
         log.info("로그인확인");
@@ -37,11 +38,6 @@ public class HomeController {
             return url;
         }
         return "redirect:/oauth2/authorization/google";
-    }
-    @RequestMapping(value={"/user"})
-    public String rere(Model model) {
-        log.info("접속 시작");
-        return "write";
     }
 
 
