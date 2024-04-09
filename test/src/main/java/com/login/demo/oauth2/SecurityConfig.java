@@ -3,10 +3,13 @@ package com.login.demo.oauth2;
 import com.login.demo.service.Oauth2UserServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,23 +28,11 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @EnableWebSecurity
 @Configuration
-
-public class SecurityConfig{
+@AllArgsConstructor
+public class SecurityConfig {
 
     private final Oauth2UserServiceImpl oauth2UserServiceImpl;
-    public SecurityConfig(Oauth2UserServiceImpl oauth2UserServiceImpl){
-        this.oauth2UserServiceImpl = oauth2UserServiceImpl;
-    }
-//    @Bean
-//    public UserDetailsService custonUserService(){
-//        InMemoryUserDetailsManager uds =new InMemoryUserDetailsManager();
-//        UserDetails user = User.withUsername("yoon")
-//                .password("1111")
-//                .roles("ADMIN")
-//                .build();
-//        uds.createUser(user);
-//        return uds;
-//    }
+
     @Bean
     public BCryptPasswordEncoder encoder(){
         return new BCryptPasswordEncoder();
@@ -51,7 +42,7 @@ public class SecurityConfig{
             http
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement((sessionManagement) ->
-                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
 //                .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequest)-> authorizeRequest
