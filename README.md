@@ -4,7 +4,7 @@ Request Response 에서 따온 프로젝트 이름으로, 서비스를 사용하
 관심있는 주제를 태그로 등록하면 동일한 태그가 달린 게시글을 랜덤으로 띄워주는 RESTful API입니다.
 
 ## Schdule
-개발 기간 : 4주 <br>
+개발 기간 : 4주 (4/10~) <br>
 ERD 설계 : 총 6개 (user, tag, data, question, answer, comment)
 
 ### Tech Stacks
